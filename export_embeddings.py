@@ -1,5 +1,6 @@
+#!/usr/bin/env python3
+import argparse
 import fasttext
-import numpy as np
 
 def convert_fasttext_to_embedding_projector(bin_file, vectors_file, metadata_file, limit=None):
     """
@@ -39,10 +40,17 @@ def convert_fasttext_to_embedding_projector(bin_file, vectors_file, metadata_fil
     print(f"Metadata saved to {metadata_file}")
 
 if __name__ == '__main__':
-    # Example usage
-    bin_file = 'your_fasttext_model.bin'  # Replace with your .bin file
-    vectors_file = 'vectors.tsv'
-    metadata_file = 'metadata.tsv'
-    limit = 10000  # Process only the top 10,000 words (optional)
+    parser = argparse.ArgumentParser(description='Convert FastText .bin model to Embedding Projector files.')
+    parser.add_argument('bin_file', help='Path to the FastText .bin file (model.bin)')
+    parser.add_argument('vectors_file', help='Path to output vectors.tsv file')
+    parser.add_argument('metadata_file', help='Path to output metadata.tsv file')
+    parser.add_argument('--limit', type=int, help='Limit the number of words to process (optional)')
 
-    convert_fasttext_to_embedding_projector(bin_file, vectors_file, metadata_file, limit)
+    args = parser.parse_args()
+
+    convert_fasttext_to_embedding_projector(
+        bin_file=args.bin_file,
+        vectors_file=args.vectors_file,
+        metadata_file=args.metadata_file,
+        limit=args.limit
+    )

@@ -18,9 +18,9 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
     """
 
     model = fasttext.load_model(bin_file)
-    dimensions = model.dim
+    dimensions = model.get_dimension()
 
-    words = model.words
+    words = model.get_words()
     if limit is not None:
         words = words[:limit]
 

@@ -5,6 +5,8 @@ import fasttext
 import os
 from tqdm import tqdm
 
+
+# Edit this function such that if the output_dir does not exist, it creates the directory AI!
 def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=None, dimensions=None):
     """
     Converts a FastText .bin file to vectors.tsv and metadata.tsv files

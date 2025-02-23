@@ -18,6 +18,7 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
     """
 
     model = fasttext.load_model(bin_file)
+    dimensions = model.dim
 
     words = model.words
     if limit is not None:
@@ -37,6 +38,7 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
 
     num_vectors = len(words)
     print(f"Number of vectors processed: {num_vectors}")
+    print(f"Vector dimension: {dimensions}")
     print(f"Number of unique words processed: {num_vectors}")
     print(f"Vectors saved to {vectors_file}")
     print(f"Metadata saved to {metadata_file}")

@@ -5,7 +5,7 @@ import fasttext
 import os
 from tqdm import tqdm
 
-def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=None):
+def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=None, dimensions=None):
     """
     Converts a FastText .bin file to vectors.tsv and metadata.tsv files
     suitable for the TensorFlow Embedding Projector.
@@ -15,10 +15,12 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
         output_dir: Path to the output directory. If None, use current directory.
         limit: Optional.  Only process the top 'limit' most frequent words.
                If None, process all words in the model.
+        dimensions: Optional.  Downscale embeddings to this dimension.
+                    If None, keep original dimensions.
     """
 
     model = fasttext.load_model(bin_file)
-    dimensions = model.get_dimension()
+    dimensions = dimensions or model.get_dimension()
 
     words = model.get_words()
     if limit is not None:
@@ -37,7 +39,11 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
 
         for word in tqdm(words, desc="Processing words"):
             vector = model.get_word_vector(word)  # type: ignore (fasttext stubs incomplete)
-            vector_str = '\t'.join(map(str, vector))
+            if dimensions is not None and dimensions < len(vector):
+                vector_downscaled = vector[:dimensions]
+                vector_str = '\t'.join(map(str, vector_downscaled))
+            else:
+                vector_str = '\t'.join(map(str, vector))
             f_vec.write(f"{vector_str}\n")
             f_meta.write(f"{word}\n")
 
@@ -54,6 +60,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert FastText .bin model to Embedding Projector files.')
     parser.add_argument('bin_file', help='Path to the FastText .bin file (model.bin)')
     parser.add_argument('--limit', type=int, help='Limit the number of words to process (optional)')
+    parser.add_argument('--dimensions', type=int, default=None, help='Downscale embeddings to this dimension (optional)')
     parser.add_argument('--output_dir', '-o', type=str, default=None, help='Path to the output directory (optional, default: current directory)')
 
     args = parser.parse_args()
@@ -61,5 +68,6 @@ if __name__ == '__main__':
     convert_fasttext_to_embedding_projector(
         bin_file=args.bin_file,
         output_dir=args.output_dir,
-        limit=args.limit
+        limit=args.limit,
+        dimensions=args.dimensions
     )

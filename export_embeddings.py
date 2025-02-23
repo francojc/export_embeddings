@@ -2,7 +2,6 @@
 
 import argparse
 import fasttext
-import gzip
 import os
 
 def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=None):
@@ -17,16 +16,7 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
                If None, process all words in the model.
     """
 
-    try:
-        if bin_file.endswith('.bin.gz'):
-            with gzip.open(bin_file, 'rb') as f:
-                model = fasttext.load_model(f)
-        else:
-            model = fasttext.load_model(bin_file)
-    except ValueError as e:
-        print(f"Error loading FastText model: {e}")
-        print("Make sure the '.bin' or '.bin.gz' file is a valid FastText model.")
-        return
+    model = fasttext.load_model(bin_file)
 
     words = model.words
     if limit is not None:

@@ -6,7 +6,6 @@ import os
 from tqdm import tqdm
 
 
-# Edit this function such that if the output_dir does not exist, it creates the directory AI!
 def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=None, dimensions=None):
     """
     Converts a FastText .bin file to vectors.tsv and metadata.tsv files
@@ -23,15 +22,18 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
 
     model = fasttext.load_model(bin_file)
     dimensions = dimensions or model.get_dimension()
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    output_dir = output_dir if output_dir else '.'
 
     words = model.get_words()
     if limit is not None:
         words = words[:limit]
 
-    vectors_file = os.path.join(output_dir if output_dir else '.', 'vectors.tsv')
-    metadata_file = os.path.join(output_dir if output_dir else '.', 'metadata.tsv')
+    vectors_file = os.path.join(output_dir, 'vectors.tsv')
+    metadata_file = os.path.join(output_dir, 'metadata.tsv')
     with open(vectors_file, 'w') as f_vec, open(metadata_file, 'w', encoding='utf-8') as f_meta:
-        readme_file = os.path.join(output_dir if output_dir else '.', 'README.md')
+        readme_file = os.path.join(output_dir, 'README.md')
         with open(readme_file, 'w') as f_readme:
             f_readme.write("# Embedding Projector Files\n\n")
             f_readme.write("These files (`vectors.tsv` and `metadata.tsv`) are generated for use with the [TensorFlow Embedding Projector](https://projector.tensorflow.org/).\n\n")

@@ -35,6 +35,9 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
             f_vec.write(f"{vector_str}\n")
             f_meta.write(f"{word}\n")
 
+    num_vectors = len(words)
+    print(f"Number of vectors processed: {num_vectors}")
+    print(f"Number of unique words processed: {num_vectors}")
     print(f"Vectors saved to {vectors_file}")
     print(f"Metadata saved to {metadata_file}")
 

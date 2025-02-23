@@ -28,6 +28,7 @@
           fasttext
           ipython
           jupyter
+          numpy
         ];
 
       allPackages = packages ++ [python];

@@ -1,3 +1,4 @@
+models/
+.aider*
 .DS_Store
 .direnv/
-.aider*

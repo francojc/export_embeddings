@@ -4,7 +4,6 @@ import argparse
 import csv
 import os
 
-
 def add_translation(metadata_file, translation_file, output_file):
     """
     Adds a translation column to the metadata file.
@@ -41,3 +40,4 @@ if __name__ == '__main__':
         translation_file=args.translation_file,
         output_file=args.output_file
     )
+

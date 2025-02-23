@@ -25,6 +25,7 @@
       # Python packages
       pythonPackages = ps:
         with ps; [
+          fasttext
           ipython
           jupyter
         ];

@@ -3,15 +3,13 @@
 import argparse
 import fasttext
 
-def convert_fasttext_to_embedding_projector(bin_file, vectors_file, metadata_file, limit=None):
+def convert_fasttext_to_embedding_projector(bin_file, limit=None):
     """
     Converts a FastText .bin file to vectors.tsv and metadata.tsv files
     suitable for the TensorFlow Embedding Projector.
 
     Args:
         bin_file: Path to the FastText .bin file (model.bin).
-        vectors_file: Path to output vectors.tsv file.
-        metadata_file: Path to output metadata.tsv file.
         limit: Optional.  Only process the top 'limit' most frequent words.
                If None, process all words in the model.
     """
@@ -27,7 +25,7 @@ def convert_fasttext_to_embedding_projector(bin_file, vectors_file, metadata_fil
     if limit is not None:
         words = words[:limit]
 
-    with open(vectors_file, 'w') as f_vec, open(metadata_file, 'w', encoding='utf-8') as f_meta:
+    with open('vectors.tsv', 'w') as f_vec, open('metadata.tsv', 'w', encoding='utf-8') as f_meta:
         # Write header to metadata file
         f_meta.write("Word\n")  # Header is required by the Embedding Projector
 
@@ -37,21 +35,17 @@ def convert_fasttext_to_embedding_projector(bin_file, vectors_file, metadata_fil
             f_vec.write(f"{vector_str}\n")
             f_meta.write(f"{word}\n")
 
-    print(f"Vectors saved to {vectors_file}")
-    print(f"Metadata saved to {metadata_file}")
+    print(f"Vectors saved to vectors.tsv")
+    print(f"Metadata saved to metadata.tsv")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert FastText .bin model to Embedding Projector files.')
     parser.add_argument('bin_file', help='Path to the FastText .bin file (model.bin)')
-    parser.add_argument('vectors_file', help='Path to output vectors.tsv file')
-    parser.add_argument('metadata_file', help='Path to output metadata.tsv file')
     parser.add_argument('--limit', type=int, help='Limit the number of words to process (optional)')
 
     args = parser.parse_args()
 
     convert_fasttext_to_embedding_projector(
         bin_file=args.bin_file,
-        vectors_file=args.vectors_file,
-        metadata_file=args.metadata_file,
         limit=args.limit
     )

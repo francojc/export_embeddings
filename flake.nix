@@ -29,6 +29,7 @@
           ipython
           jupyter
           numpy
+          tqdm
         ];
 
       allPackages = packages ++ [python];

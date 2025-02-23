@@ -3,6 +3,7 @@
 import argparse
 import fasttext
 import os
+from tqdm import tqdm
 
 def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=None):
     """
@@ -28,7 +29,7 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
         # Write header to metadata file
         f_meta.write("Word\n")  # Header is required by the Embedding Projector
 
-        for word in words:
+        for word in tqdm(words, desc="Processing words"):
             vector = model.get_word_vector(word)  # type: ignore (fasttext stubs incomplete)
             vector_str = '\t'.join(map(str, vector))
             f_vec.write(f"{vector_str}\n")

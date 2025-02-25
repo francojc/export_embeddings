@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Modify to use flags -h for the URL and -d for the target directory AI!
 
 # download_model_files.sh - Downloads and extracts archived model files
 # Usage: ./download_model_files.sh <url> <target_directory>

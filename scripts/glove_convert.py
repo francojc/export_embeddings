@@ -105,15 +105,14 @@ def convert_glove_to_embedding_projector(glove_file, output_dir=None, limit=None
         for vector in vectors:
             vec_file.write('\t'.join(map(str, vector)) + '\n')
 
-    # Write metadata TSV
+    # Write metadata TSV (no header needed for single column)
     with open(metadata_file, 'w', encoding=encoding) as meta_file:
-        meta_file.write("Word\n")  # Header required by Embedding Projector
         for word in words:
             meta_file.write(f"{word}\n")
             
     # Double-check file lengths
     vec_lines = sum(1 for _ in open(vectors_file, 'r', encoding=encoding))
-    meta_lines = sum(1 for _ in open(metadata_file, 'r', encoding=encoding)) - 1  # Subtract header
+    meta_lines = sum(1 for _ in open(metadata_file, 'r', encoding=encoding))
     
     if vec_lines != meta_lines:
         print(f"Warning: Final file length mismatch - vectors.tsv: {vec_lines}, metadata.tsv: {meta_lines}")

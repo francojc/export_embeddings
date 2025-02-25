@@ -103,6 +103,3 @@ if __name__ == '__main__':
         dimensions=args.dimensions,
         encoding=args.encoding
     )
-
-if __name__ == '__main__':
-    main()

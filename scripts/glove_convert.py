@@ -41,10 +41,7 @@ def convert_glove_to_embedding_projector(glove_file, output_dir=None, limit=None
                 word = parts[0]
                 vector = np.array([float(x) for x in parts[1:]])
                 
-                # Downscale if needed
-                if dimensions is not None and dimensions < len(vector):
-                    vector = vector[:dimensions]
-                    
+                # Store original vector for dimension check
                 words.append(word)
                 vectors.append(vector)
             except (ValueError, IndexError) as e:
@@ -53,9 +50,23 @@ def convert_glove_to_embedding_projector(glove_file, output_dir=None, limit=None
 
     # Validate vector dimensions
     if len(vectors) > 0 and len(set(len(v) for v in vectors)) > 1:
-        print("Warning: Inconsistent vector dimensions found!")
-        
-    vector_size = len(vectors[0]) if vectors else 0
+        print("Warning: Inconsistent vector dimensions found in the input file!")
+        # Use the most common dimension
+        from collections import Counter
+        dim_counts = Counter(len(v) for v in vectors)
+        most_common_dim = dim_counts.most_common(1)[0][0]
+        print(f"Using the most common dimension: {most_common_dim}")
+        # Filter vectors to only include those with the most common dimension
+        valid_indices = [i for i, v in enumerate(vectors) if len(v) == most_common_dim]
+        vectors = [vectors[i] for i in valid_indices]
+        words = [words[i] for i in valid_indices]
+    
+    # Apply dimension reduction if needed
+    if dimensions is not None and vectors and dimensions < len(vectors[0]):
+        vectors = [v[:dimensions] for v in vectors]
+        vector_size = dimensions
+    else:
+        vector_size = len(vectors[0]) if vectors else 0
 
     vectors_file = os.path.join(output_dir, 'vectors.tsv')
     metadata_file = os.path.join(output_dir, 'metadata.tsv')

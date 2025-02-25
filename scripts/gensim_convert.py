@@ -22,7 +22,7 @@ def convert_gensim_to_embedding_projector(model_file, output_dir=None, limit=Non
 
     # Load the model
     model = KeyedVectors.load_word2vec_format(model_file) if model_file.endswith(('.txt', '.vec', '.bin')) else KeyedVectors.load(model_file)
-    
+
     # Create output directory if it doesn't exist
     if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -30,7 +30,7 @@ def convert_gensim_to_embedding_projector(model_file, output_dir=None, limit=Non
 
     # Get all words from the model
     words = list(model.key_to_index.keys())
-    
+
     # Sort words by frequency if available, otherwise keep as is
     if hasattr(model, 'get_vecattr'):
         try:
@@ -39,7 +39,7 @@ def convert_gensim_to_embedding_projector(model_file, output_dir=None, limit=Non
         except KeyError:
             # If count attribute doesn't exist, keep original order
             pass
-    
+
     # Apply limit if specified
     if limit is not None:
         words = words[:limit]
@@ -49,7 +49,7 @@ def convert_gensim_to_embedding_projector(model_file, output_dir=None, limit=Non
 
     vectors_file = os.path.join(output_dir, 'vectors.tsv')
     metadata_file = os.path.join(output_dir, 'metadata.tsv')
-    
+
     with open(vectors_file, 'w') as f_vec, open(metadata_file, 'w', encoding='utf-8') as f_meta:
         readme_file = os.path.join(output_dir, 'README.md')
         with open(readme_file, 'w') as f_readme:
@@ -61,11 +61,11 @@ def convert_gensim_to_embedding_projector(model_file, output_dir=None, limit=Non
 
         for word in tqdm(words, desc="Processing words"):
             vector = model[word]  # Get the word vector
-            
+
             # Downscale if needed
             if dimensions is not None and dimensions < len(vector):
                 vector = vector[:dimensions]
-                
+
             vector_str = '\t'.join(map(str, vector))
             f_vec.write(f"{vector_str}\n")
             f_meta.write(f"{word}\n")

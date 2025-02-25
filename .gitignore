@@ -1,5 +1,5 @@
-models/
-output/
+models/**/*
+output/**/*
 .aider*
 .DS_Store
 .direnv/

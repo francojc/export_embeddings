@@ -3,7 +3,11 @@
 import argparse
 import fasttext
 import os
+import warnings
 from tqdm import tqdm
+
+# Suppress the specific FastText warning about load_model return type
+warnings.filterwarnings("ignore", message=".*load_model does not return WordVectorModel or SupervisedModel.*")
 
 
 def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=None, dimensions=None):

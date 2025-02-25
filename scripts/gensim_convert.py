@@ -23,22 +23,39 @@ def convert_gensim_to_embedding_projector(model_file, output_dir=None, limit=Non
     # Load the model
     model = KeyedVectors.load_word2vec_format(model_file) if model_file.endswith(('.txt', '.vec', '.bin')) else KeyedVectors.load(model_file)
 
+    # If model is Word2Vec, get its word vectors
+    if hasattr(model, 'wv'):
+        model = model.wv
+
     # Create output directory if it doesn't exist
     if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir)
     output_dir = output_dir if output_dir else '.'
 
-    # Get all words from the model
-    words = list(model.key_to_index.keys())
+    # Get all words from the model (compatible with both Gensim 3.x and 4.x)
+    if hasattr(model, 'key_to_index'):
+        # Gensim 4.x
+        words = list(model.key_to_index.keys())
+    elif hasattr(model, 'vocab'):
+        # Gensim 3.x
+        words = list(model.vocab.keys())
+    else:
+        raise ValueError("Cannot determine vocabulary structure of the model")
 
     # Sort words by frequency if available, otherwise keep as is
-    if hasattr(model, 'get_vecattr'):
-        try:
-            # Try to sort by count attribute if it exists
-            words = sorted(words, key=lambda w: model.get_vecattr(w, 'count'), reverse=True)
-        except KeyError:
-            # If count attribute doesn't exist, keep original order
-            pass
+    try:
+        if hasattr(model, 'get_vecattr'):
+            # Gensim 4.x approach
+            try:
+                words = sorted(words, key=lambda w: model.get_vecattr(w, 'count'), reverse=True)
+            except KeyError:
+                pass
+        elif hasattr(model, 'vocab'):
+            # Gensim 3.x approach
+            words = sorted(words, key=lambda w: model.vocab[w].count, reverse=True)
+    except (AttributeError, KeyError):
+        # If sorting fails for any reason, keep original order
+        pass
 
     # Apply limit if specified
     if limit is not None:

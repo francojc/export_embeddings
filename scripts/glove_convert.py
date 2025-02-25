@@ -48,25 +48,39 @@ def convert_glove_to_embedding_projector(glove_file, output_dir=None, limit=None
                 print(f"Warning: Skipping invalid line: {line.strip()}")
                 continue
 
-    # Validate vector dimensions
-    if len(vectors) > 0 and len(set(len(v) for v in vectors)) > 1:
-        print("Warning: Inconsistent vector dimensions found in the input file!")
-        # Use the most common dimension
-        from collections import Counter
-        dim_counts = Counter(len(v) for v in vectors)
-        most_common_dim = dim_counts.most_common(1)[0][0]
-        print(f"Using the most common dimension: {most_common_dim}")
-        # Filter vectors to only include those with the most common dimension
-        valid_indices = [i for i, v in enumerate(vectors) if len(v) == most_common_dim]
-        vectors = [vectors[i] for i in valid_indices]
-        words = [words[i] for i in valid_indices]
-    
-    # Apply dimension reduction if needed
-    if dimensions is not None and vectors and dimensions < len(vectors[0]):
-        vectors = [v[:dimensions] for v in vectors]
-        vector_size = dimensions
+    # Validate vector dimensions and ensure words and vectors stay in sync
+    if len(vectors) > 0:
+        # Check for inconsistent dimensions
+        vector_lengths = [len(v) for v in vectors]
+        if len(set(vector_lengths)) > 1:
+            print("Warning: Inconsistent vector dimensions found in the input file!")
+            # Use the most common dimension
+            from collections import Counter
+            dim_counts = Counter(vector_lengths)
+            most_common_dim = dim_counts.most_common(1)[0][0]
+            print(f"Using the most common dimension: {most_common_dim}")
+            
+            # Filter vectors and words to only include those with the most common dimension
+            valid_pairs = [(w, v) for w, v in zip(words, vectors) if len(v) == most_common_dim]
+            if not valid_pairs:
+                raise ValueError("No vectors with consistent dimensions found!")
+                
+            # Unpack the filtered pairs
+            words, vectors = zip(*valid_pairs)
+            words = list(words)  # Convert back to list for later modification
+            vectors = list(vectors)
+            
+            print(f"Kept {len(words)} vectors with consistent dimensions")
+        
+        # Apply dimension reduction if needed
+        if dimensions is not None and vectors and dimensions < len(vectors[0]):
+            vectors = [v[:dimensions] for v in vectors]
+            vector_size = dimensions
+        else:
+            vector_size = len(vectors[0]) if vectors else 0
     else:
-        vector_size = len(vectors[0]) if vectors else 0
+        print("Warning: No vectors were loaded!")
+        vector_size = 0
 
     vectors_file = os.path.join(output_dir, 'vectors.tsv')
     metadata_file = os.path.join(output_dir, 'metadata.tsv')
@@ -76,6 +90,15 @@ def convert_glove_to_embedding_projector(glove_file, output_dir=None, limit=None
     with open(readme_file, 'w') as f_readme:
         f_readme.write("# Embedding Projector Files\n\n")
         f_readme.write("These files (`vectors.tsv` and `metadata.tsv`) are generated for use with the [TensorFlow Embedding Projector](https://projector.tensorflow.org/).\n\n")
+
+    # Ensure we have the same number of words and vectors
+    if len(words) != len(vectors):
+        print(f"Warning: Mismatch between number of words ({len(words)}) and vectors ({len(vectors)})")
+        # Truncate to the shorter length
+        min_len = min(len(words), len(vectors))
+        words = words[:min_len]
+        vectors = vectors[:min_len]
+        print(f"Truncated to {min_len} entries")
 
     # Write vector TSV
     with open(vectors_file, 'w', encoding=encoding) as vec_file:
@@ -87,6 +110,13 @@ def convert_glove_to_embedding_projector(glove_file, output_dir=None, limit=None
         meta_file.write("Word\n")  # Header required by Embedding Projector
         for word in words:
             meta_file.write(f"{word}\n")
+            
+    # Double-check file lengths
+    vec_lines = sum(1 for _ in open(vectors_file, 'r', encoding=encoding))
+    meta_lines = sum(1 for _ in open(metadata_file, 'r', encoding=encoding)) - 1  # Subtract header
+    
+    if vec_lines != meta_lines:
+        print(f"Warning: Final file length mismatch - vectors.tsv: {vec_lines}, metadata.tsv: {meta_lines}")
 
     num_vectors = len(words)
     with open(readme_file, 'a') as f_readme:

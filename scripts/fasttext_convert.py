@@ -42,8 +42,7 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
             f_readme.write("# Embedding Projector Files\n\n")
             f_readme.write("These files (`vectors.tsv` and `metadata.tsv`) are generated for use with the [TensorFlow Embedding Projector](https://projector.tensorflow.org/).\n\n")
 
-        # Write header to metadata file
-        f_meta.write("Word\n")  # Header is required by the Embedding Projector
+        # No header needed for single column metadata files
 
         for word in tqdm(words, desc="Processing words"):
             vector = model.get_word_vector(word)  # type: ignore (fasttext stubs incomplete)
@@ -53,6 +52,7 @@ def convert_fasttext_to_embedding_projector(bin_file, output_dir=None, limit=Non
             else:
                 vector_str = '\t'.join(map(str, vector))
             f_vec.write(f"{vector_str}\n")
+            # Write word to metadata file (no header needed for single column)
             f_meta.write(f"{word}\n")
 
         num_vectors = len(words)

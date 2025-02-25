@@ -1,21 +1,29 @@
 #!/usr/bin/env bash
 
-# Modify to use flags -h for the URL and -d for the target directory AI!
-
 # download_model_files.sh - Downloads and extracts archived model files
-# Usage: ./download_model_files.sh <url> <target_directory>
+# Usage: ./download_model_files.sh -h <url> -d <target_directory>
 
 set -e
 
+# Initialize variables
+URL=""
+TARGET_DIR=""
+
+# Parse command line options
+while getopts "h:d:" opt; do
+  case $opt in
+    h) URL="$OPTARG" ;;
+    d) TARGET_DIR="$OPTARG" ;;
+    \?) echo "Invalid option -$OPTARG" >&2; exit 1 ;;
+  esac
+done
+
 # Check if required arguments are provided
-if [ $# -lt 2 ]; then
-    echo "Usage: $0 <url> <target_directory>"
-    echo "Example: $0 https://example.com/model.zip ./models/english"
+if [ -z "$URL" ] || [ -z "$TARGET_DIR" ]; then
+    echo "Usage: $0 -h <url> -d <target_directory>"
+    echo "Example: $0 -h https://example.com/model.zip -d ./models/english"
     exit 1
 fi
-
-URL=$1
-TARGET_DIR=$2
 
 # Create target directory if it doesn't exist
 mkdir -p "$TARGET_DIR"

@@ -7,9 +7,9 @@
         300
       ],
       "tensorPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/English/vectors.tsv",
-      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/English/metadata.tsv"
+      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/English/metadata.tsv",
+      "bookmarksPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/English/bookmarks.txt"
     }
   ]
 }
-
 

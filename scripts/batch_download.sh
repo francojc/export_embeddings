@@ -46,7 +46,7 @@ while IFS=$'\t' read -r URL TARGET_DIR FORCE; do
     fi
 
     # Execute download_model_files.sh for each URL and target directory
-    ./scripts/download_model_files.sh -h "$URL" -d "$TARGET_DIR" $FORCE_ARG
+    ./download_model_files.sh -h "$URL" -d "$TARGET_DIR" $FORCE_ARG
 
     echo "-------------------------"
 done < "$TSV_FILE"

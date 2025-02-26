@@ -12,7 +12,7 @@ set -e
 # Check if a TSV file is provided as an argument
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <tsv_file>"
-    echo "       <tsv_file> is a TSV file with URLs (col 1), target directories (col 2), and force flags (col 3)"
+    echo "       <tsv_file> is a file with URLs (col 1), target directories (col 2), and force flags (col 3), delimited by spaces or tabs."
     echo "       Column 3 should be 'true' or 'false' to indicate force download."
     echo "Example: $0 urls_dirs_force.tsv"
     exit 1
@@ -27,7 +27,7 @@ if [ ! -r "$TSV_FILE" ]; then
 fi
 
 # Read TSV file and process each line
-while IFS=$'\t' read -r URL TARGET_DIR FORCE; do
+while IFS=$' ' read -r URL TARGET_DIR FORCE; do # Changed IFS to space ' '
     # Skip empty lines and lines starting with '#' (comments)
     if [[ -z "$URL" ]] || [[ "$URL" == \#* ]]; then
         continue

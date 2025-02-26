@@ -37,16 +37,17 @@ while IFS=$'\t' read -r URL TARGET_DIR FORCE; do
     echo "Target directory: $TARGET_DIR"
 
     # Determine if force download is requested
-    FORCE_ARG=""
+    FORCE_VALUE=""
     if [[ "$FORCE" =~ ^(true|TRUE|True)$ ]]; then
-        FORCE_ARG="--force true"
+        FORCE_VALUE="true"
         echo "Force download: true"
     else
+        FORCE_VALUE="false"
         echo "Force download: false (default)"
     fi
 
     # Execute download_model_files.sh for each URL and target directory
-    ./scripts/download_model_files.sh -h "$URL" -d "$TARGET_DIR" -f $FORCE_ARG
+    ./scripts/download_model_files.sh -h "$URL" -d "$TARGET_DIR" -f "$FORCE_VALUE"
 
     echo "-------------------------"
 done < "$TSV_FILE"

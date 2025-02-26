@@ -1,28 +1,36 @@
 #!/usr/bin/env bash
 
 # download_model_files.sh - Downloads and extracts archived model files
-# Usage: ./download_model_files.sh -h <url> -d <target_directory>
+# Usage: ./download_model_files.sh -h <url> -d <target_directory> [--force true|false]
 
 set -e
 
 # Initialize variables
 URL=""
 TARGET_DIR=""
+FORCE_DOWNLOAD=false
 
 # Parse command line options
-while getopts "h:d:" opt; do
+while getopts "h:d:f:" opt; do
   case $opt in
     h) URL="$OPTARG" ;;
     d) TARGET_DIR="$OPTARG" ;;
+    f) FORCE_DOWNLOAD="$OPTARG" ;;
     \?) echo "Invalid option -$OPTARG" >&2; exit 1 ;;
   esac
 done
 
 # Check if required arguments are provided
 if [ -z "$URL" ] || [ -z "$TARGET_DIR" ]; then
-    echo "Usage: $0 -h <url> -d <target_directory>"
-    echo "Example: $0 -h https://example.com/model.zip -d ./models/english"
+    echo "Usage: $0 -h <url> -d <target_directory> [--force true|false]"
+    echo "Example: $0 -h https://example.com/model.zip -d ./models/english --force true"
     exit 1
+fi
+
+# Check if target directory exists and if force download is not requested
+if [ -d "$TARGET_DIR" ] && [ "$FORCE_DOWNLOAD" != "true" ]; then
+    echo "Target directory '$TARGET_DIR' already exists. Skipping download. Use --force true to overwrite."
+    exit 0
 fi
 
 # Create target directory if it doesn't exist

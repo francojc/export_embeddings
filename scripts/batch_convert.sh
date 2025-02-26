@@ -15,6 +15,5 @@
 # GloVe models
 ./scripts/glove_convert.py ./models/Twitter/glove.twitter.27B.200d.txt  --output_dir ./output/Twitter/ --limit 100000 --dimensions 200
 
-
 # Word2Vec models
-./scripts/gensim_convert.py ./models/Icelandic/ICE/
+# ./scripts/gensim_convert.py ./models/Icelandic/ICE/

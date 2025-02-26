@@ -8,5 +8,5 @@ These files (`vectors.tsv` and `metadata.tsv`) are generated for use with the [T
 - Vector dimension: 300
 - Number of unique words: 100000
 
-Vectors saved to `output/Icelandic/vectors.tsv`.
-Metadata saved to `output/Icelandic/metadata.tsv`.
+Vectors saved to `./output/Icelandic/vectors.tsv`.
+Metadata saved to `./output/Icelandic/metadata.tsv`.

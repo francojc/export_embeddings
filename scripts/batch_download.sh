@@ -27,7 +27,7 @@ if [ ! -r "$TSV_FILE" ]; then
 fi
 
 # Read TSV file and process each line
-while IFS=$' ' read -r URL TARGET_DIR FORCE; do # Changed IFS to space ' '
+while IFS=$'\t' read -r URL TARGET_DIR FORCE; do
     # Skip empty lines and lines starting with '#' (comments)
     if [[ -z "$URL" ]] || [[ "$URL" == \#* ]]; then
         continue
@@ -47,7 +47,7 @@ while IFS=$' ' read -r URL TARGET_DIR FORCE; do # Changed IFS to space ' '
     fi
 
     # Execute download_model_files.sh for each URL and target directory
-    ./scripts/download_model_files.sh -h "$URL" -d "$TARGET_DIR" -f "$FORCE_VALUE"
+    ./scripts/download_model_files.sh -h "$URL" -d "$TARGET_DIR" "$FORCE_VALUE"
 
     echo "-------------------------"
 done < "$TSV_FILE"

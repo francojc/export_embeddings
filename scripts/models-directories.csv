@@ -1,0 +1,4 @@
+https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.nl.300.bin.gz,./models/Dutch/,False
+https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.sv.300.bin.gz,./models/Swedish/	False
+https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.ar.300.bin.gz,./models/Arabic/,False
+https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.is.300.bin.gz,./models/Icelandic/,False

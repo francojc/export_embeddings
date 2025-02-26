@@ -2,3 +2,5 @@ https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.nl.300.bin.gz,./models/
 https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.sv.300.bin.gz,./models/Swedish/	False
 https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.ar.300.bin.gz,./models/Arabic/,False
 https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.is.300.bin.gz,./models/Icelandic/,False
+https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.bin.gz,./models/English/,False
+https://nlp.stanford.edu/data/glove.twitter.27B.zip,./models/Twitter/,False

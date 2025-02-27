@@ -1,0 +1,14 @@
+{
+  "embeddings": [
+    {
+      "tensorName": "Arabic (wiki + common crawl)",
+      "tensorShape": [
+        100000,
+        300
+      ],
+      "tensorPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Arabic/vectors.tsv",
+      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Arabic/metadata.tsv",
+    }
+  ]
+}
+

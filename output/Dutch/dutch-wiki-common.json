@@ -7,7 +7,7 @@
         300
       ],
       "tensorPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Dutch/vectors.tsv",
-      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Dutch/metadata.tsv",
+      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Dutch/metadata.tsv"
     }
   ]
 }

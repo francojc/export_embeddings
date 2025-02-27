@@ -7,7 +7,7 @@
         200
       ],
       "tensorPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Twitter/vectors.tsv",
-      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Twitter/metadata.tsv",
+      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Twitter/metadata.tsv"
     }
   ]
 }

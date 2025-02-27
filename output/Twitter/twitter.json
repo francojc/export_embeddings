@@ -1,0 +1,15 @@
+{
+  "embeddings": [
+    {
+      "tensorName": "Twitter",
+      "tensorShape": [
+        99999,
+        200
+      ],
+      "tensorPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Twitter/vectors.tsv",
+      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Twitter/metadata.tsv",
+    }
+  ]
+}
+
+

@@ -1,0 +1,15 @@
+{
+  "embeddings": [
+    {
+      "tensorName": "Swedish (wiki + common crawl)",
+      "tensorShape": [
+        100000,
+        300
+      ],
+      "tensorPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Swedish/vectors.tsv",
+      "metadataPath": "https://media.githubusercontent.com/media/francojc/export_embeddings/refs/heads/main/output/Swedish/metadata.tsv",
+    }
+  ]
+}
+
+
